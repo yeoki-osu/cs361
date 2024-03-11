@@ -1,6 +1,7 @@
 # python -m pip install --upgrade pip --user
 # pip install Flask requests
 # https://api.nookipedia.com/doc#/paths/~1villagers/get
+# python ac_api.py
 
 import requests
 from flask import Flask, request, jsonify
