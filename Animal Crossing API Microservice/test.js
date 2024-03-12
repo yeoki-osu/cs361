@@ -24,9 +24,9 @@ async function queryCharacters(data) {
 }
 
 const queryData = {
-  species: 'wolf',
-  gender: 'female',
-  personality: 'peppy',
+  species: '',
+  gender: '',
+  personality: '',
   name: ''
 };
 

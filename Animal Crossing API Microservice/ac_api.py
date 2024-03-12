@@ -1,12 +1,16 @@
 # python -m pip install --upgrade pip --user
 # pip install Flask requests
+# pip install Flask-CORS
 # https://api.nookipedia.com/doc#/paths/~1villagers/get
+
 # python ac_api.py
 
 import requests
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 BASE_URL = "https://api.nookipedia.com/villagers"
 API_KEY = "26b6d7c2-a054-4308-bce3-4f8c956cc675"
