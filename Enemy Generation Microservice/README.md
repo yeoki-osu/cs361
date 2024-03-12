@@ -49,4 +49,4 @@ This program is a microservice designed for RPG dungeon crawls. It takes in two 
 
 
 ## Sequence Diagram
-![A picture of a UML diagram](./Sequence%20diagram.png)
+![Sequence diagram](https://github.com/yeoki-osu/cs361/assets/102574539/6303729b-ec47-4f97-8447-7064578b8979)
