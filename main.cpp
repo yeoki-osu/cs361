@@ -1,7 +1,12 @@
-// g++ main.cpp -o run -lncurses
+// g++ main.cpp enemysharelib.o -o run -lncurses
 
 #include <ncurses.h>
 #include <unistd.h>
+#include "enemysharelib.h"
+
+struct enemy* currEnemy;
+int currFloor = 1;
+int currHealth = 100;
 
 // Function to print the menu with highlighted current option
 void printMenu(int selectedOption) {
@@ -195,12 +200,17 @@ void info(){
     attroff(COLOR_PAIR(1));
 
     // Print information
-    mvprintw(3, 0, "-     PLAYER HEALTH        ---   100 HP         -");
+    mvprintw(3, 0, "-     PLAYER HEALTH        ---                  -");
+    mvprintw(3, 33, "%d HP", currHealth);
     mvprintw(4, 0, "-     PLAYER ATTACK RANGE  ---   5-20 DMG       -");
-    mvprintw(5, 0, "-     ENEMY HEALTH         ---   100 DMG        -");
-    mvprintw(6, 0, "-     ENEMY ATTACK         ---   0 DMG          -");
-    mvprintw(7, 0, "-                                               -");
-    mvprintw(8, 0, "-------------------------------------------------");
+    mvprintw(5, 0, "-     ENEMY HEALTH         ---                  -");
+    mvprintw(5, 33, "%d HP", currEnemy->health);
+    mvprintw(6, 0, "-     ENEMY ATTACK         ---                  -");
+    mvprintw(6, 33, "%d DMG", currEnemy->attack);
+    mvprintw(7, 0, "-     ENEMY RARITY         ---                  -");
+    mvprintw(7, 33, "%d", currEnemy->rarity);
+    mvprintw(8, 0, "-                                               -");
+    mvprintw(9, 0, "-------------------------------------------------");
 
     // Refresh the screen
     refresh();
@@ -217,7 +227,8 @@ void inventory(){
     attroff(COLOR_PAIR(1));
 
     // Print inventory
-    mvprintw(3, 0, "-      PLAYER HEALTH         ---   100 HP       -");
+    mvprintw(3, 0, "-      PLAYER HEALTH         ---                -");
+    mvprintw(3, 35, "%d HP", currHealth);
     mvprintw(4, 0, "-      SMALL POTION (10 HP)  ---   0            -");
     mvprintw(5, 0, "-      MED POTION (50 HP)    ---   0            -");
     mvprintw(6, 0, "-      BIG POTION (100 HP)   ---   0            -");
@@ -229,35 +240,37 @@ void inventory(){
 }
 
 // Function to print the health bar
-void printHealthBar(int health) {
+void printHealthBar() {
     mvprintw(4, 16, "["); // Start of the health bar
     attron(COLOR_PAIR(1)); // Set color for the health bar
-    for (int i = 0; i < health / 5; i++) {
+    for (int i = 0; i < currEnemy->health / 5; i++) {
         printw("="); // Print each segment of the health bar
     }
     attroff(COLOR_PAIR(1)); // Reset color
-    for (int i = health / 5; i < 20; i++) {
+    for (int i = currEnemy->health / 5; i < 20; i++) {
         printw(" "); // Fill remaining space with empty characters
     }
-    printw("]"); // End of the health bar
+    printw("] %d", currEnemy->health); // End of the health bar
 }
 
-void playGameMenu2(int health){
+void playGameMenu2(){
     clear();
 
     // Print title
     attron(COLOR_PAIR(1));
     mvprintw(0, 0, "-------------------------------------------------");
-    mvprintw(1, 0, "-                 << FLOOR 1 >>                 -");
+    mvprintw(1, 0, "-                 << FLOOR                      -");
+    mvprintw(1, 27, "%d >>", currFloor);
     mvprintw(2, 0, "-                                               -");
     attroff(COLOR_PAIR(1));
 
     // Game initialization complete
-    mvprintw(3, 0, "-               ENEMY: TEST DUMMY               -");
+    mvprintw(3, 0, "-               ENEMY:                          -");
+    mvprintw(3, 23, "%s", currEnemy->name);
     mvprintw(4, 0, "-       HEALTH:                                 -");
     
     // Print the health bar
-    printHealthBar(health);
+    printHealthBar();
     
     mvprintw(5, 0, "-                                               -");
     mvprintw(6, 0, "-                [    ATTACK   ]                -");
@@ -310,17 +323,12 @@ void playGameS3(int difficulty){
     mvprintw(5, 0, "-                                               -");
     mvprintw(6, 0, "-------------------------------------------------");
 
-    mvprintw(8, 0, "That's the end of the prototype! Feel free to exit the game anytime.");
-
     // Refresh the screen
     refresh();
 }
 
 void playGameS2(int difficulty){
-    int enemyHealth = 100;   // NOTE: DETERMINE BY DIFFICULY AND FLOOR (player and enemy data into structs)
-    int damage = 0;
-    
-    playGameMenu2(enemyHealth);
+    playGameMenu2();
 
     // Initialize cursor position
     int cursorY = 6;
@@ -361,10 +369,10 @@ void playGameS2(int difficulty){
             case '1':
             case ' ':
                 if (selectedOption == 0){
-                    damage = attack();
-                    enemyHealth -= damage;
-                    if (enemyHealth <= 0){
+                    currEnemy->health -= attack();
+                    if (currEnemy->health <= 0){
                         playGameS3(difficulty);
+                        currFloor++;
                         while (true) {
                         int input = getch();
                         if (input == 27 || input == 8 || input == '2' || input == KEY_DC)
@@ -372,7 +380,7 @@ void playGameS2(int difficulty){
                         }
                         return;
                     }
-                    playGameMenu2(enemyHealth);
+                    playGameMenu2();
                 }
                 else if (selectedOption == 1){
                     inventory();
@@ -381,7 +389,7 @@ void playGameS2(int difficulty){
                         if (input == 27 || input == 8 || input == '2' || input == KEY_DC)
                             break;
                     }
-                    playGameMenu2(enemyHealth);
+                    playGameMenu2();
                 }
                 else if (selectedOption == 2){
                     info();
@@ -390,7 +398,7 @@ void playGameS2(int difficulty){
                         if (input == 27 || input == 8 || input == '2' || input == KEY_DC)
                             break;
                     }
-                    playGameMenu2(enemyHealth);
+                    playGameMenu2();
                 }
                 else if (selectedOption == 3){
                     playGameMenu1();
@@ -452,16 +460,21 @@ void playGameS1(int state){
                 switch (selectedOption) {
                     case 0:
                         // Selected EASY FLOOR
+                        currEnemy = generate_enemy(currFloor, selectedOption + 1);
                         playGameS2(selectedOption);
                         playGameMenu1();
                         break;
                     case 1:
                         // Selected NORMAL FLOOR
+                        currEnemy = generate_enemy(currFloor, selectedOption + 1);
+                        _print_enemy(currEnemy);
                         playGameS2(selectedOption);
                         playGameMenu1();
                         break;
                     case 2:
                         // Selected HARD FLOOR
+                        currEnemy = generate_enemy(currFloor, selectedOption + 1);
+                        _print_enemy(currEnemy);
                         playGameS2(selectedOption);
                         playGameMenu1();
                         break;
