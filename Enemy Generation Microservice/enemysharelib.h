@@ -11,6 +11,7 @@
 using namespace std;
 
 #define DELAY_LOOP 0.25
+
 struct enemy
 {
     int health;
@@ -20,6 +21,4 @@ struct enemy
 };
 
 void _print_enemy(struct enemy* toprint);
-
-
 struct enemy* generate_enemy(int floor, int difficulty);

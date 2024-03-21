@@ -1,7 +1,3 @@
-// enemymicroservice &
-// jobs
-// fg 1
-
 #include "enemysharelib.h"
 
 #include <iostream>
@@ -166,7 +162,5 @@ int main(int argc, char const *argv[])
         *switch_pipe = false;
     }
 
-    
-    
     return 0;
 }
