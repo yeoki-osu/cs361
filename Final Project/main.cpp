@@ -14,13 +14,13 @@
 =   > fg 1
 =   > CTRL+C
 ---------------------------------------------------------------------------------------------*/
-#include <ncurses.h>            // Ncurses output
+#include <ncurses.h>            // Ncurses dependency
 #include <fstream>              // Leaderboard data storage
-#include <string>               // String datatype
+#include <string>               // String datatype dependency
 #include <time.h>               // srand() / rand()
 #include "enemysharelib.h"      // Microservice integration
 
-// Leaderboard scores struct
+// Initial leaderboard scores
 struct scores
 {
     string first = "0";
@@ -28,14 +28,14 @@ struct scores
     string third = "0";
 };
 
-// User weapon struct
+// Initial weapon datatype
 struct weapon
 {
     string name = "";
     int attack = 0;
 };
 
-// User variable struct
+// Initial user datatype variables
 struct player
 {
     int health = 100;
@@ -48,7 +48,7 @@ struct player
     weapon weapons[3];
 };
 
-// User loot struct
+// Initial generated loot drop datatype
 struct loot
 {
     int drops = 0;
@@ -215,7 +215,6 @@ int main()
     bool running = true;        // Loop flag
     while (running)
     {
-        // Display output
         printMenu(selectedOption);
 
         // Handle user input
@@ -312,11 +311,10 @@ void printMenu(int selectedOption)
 ---------------------------------------------------------------------------------------------*/
 void play()
 {
-    // Display output
     printPlay();
 
     // Initialize cursor position
-    int cursorY = 35;
+    int cursorY = 40;
     int cursorX = 29;
 
     // Set initial selection
@@ -376,7 +374,6 @@ void printPlay()
     int totalSteps = 5;     // Number of loading bar sections
     int progress = 0;       // Current loading bar progress
 
-    // Display output
     printBlankSave();
 
     // Loading bar loop
@@ -438,7 +435,12 @@ void printBlankSave()
     mvprintw(34, 0, "-                                                                             -");
     mvprintw(35, 0, "-                                                                             -");
     mvprintw(36, 0, "-                                                                             -");
-    mvprintw(37, 0, "-------------------------------------------------------------------------------");
+    mvprintw(37, 0, "-                                                                             -");
+    mvprintw(38, 0, "-                                                                             -");
+    mvprintw(39, 0, "-                                                                             -");
+    mvprintw(40, 0, "-                                                                             -");
+    mvprintw(41, 0, "-                                                                             -");
+    mvprintw(42, 0, "-------------------------------------------------------------------------------");
 
     refresh();
 }
@@ -462,7 +464,7 @@ void printLoadingBar(int progress)
     {
         mvprintw(3, 42 + i, " ");
     }
-    printw("]");    // End of the loading bar
+    printw("]");
 }
 
 /*---------------------------------------------------------------------------------------------
@@ -471,25 +473,28 @@ void printLoadingBar(int progress)
 void printDescription()
 {
     mvprintw(5, 0, "-               Welcome to CRYPTIC CATACOMBS: SHADOWS OF THE ABYSS!           -");
-    mvprintw(7, 0, "-        You are a brave adventurer diving into a dungeon to hone your        -");
-    mvprintw(8, 0, "-                   skills toward reaching greater heights.                   -");
-    mvprintw(10, 0, "-                Why and to what extent you ask? Don't ask me.                -");
-    mvprintw(11, 0, "-                  You are your own driver in this adventure.                 -");
-    mvprintw(13, 0, "-   Once you enter the dungeon, you have to keep going until you eventually   -");
-    mvprintw(14, 0, "-                          perish or choose to quit.                          -");
-    mvprintw(16, 0, "-                   There is no way to resume your progress.                  -");
-    mvprintw(18, 0, "-     Each floor will present you with three difficulties with a range of     -");
-    mvprintw(19, 0, "-    possible enemies. The further you go into the dungeon, the harder the    -");
-    mvprintw(20, 0, "-  enemies will become. The difficulties you choose will determine the drops. -");
-    mvprintw(22, 0, "-    Each enemy will drop at least one HP potion of varying strength, while   -");
-    mvprintw(23, 0, "-                  there's a 10 percent chance for a weapon.                  -");
-    mvprintw(24, 0, "- Each difficulty has a generation pool of 4 common weapons and 2 rarer ones. -");
-    mvprintw(26, 0, "-            Better weapons will automatically replace lesser ones.           -");
-    mvprintw(27, 0, "-                         Use these drops to survive.                         -");
-    mvprintw(29, 0, "-                    It's dangerous to go alone, take this.                   -");
-    mvprintw(31, 0, "-                         +1 [ BROKEN BLADE - 10 DMG ]                        -");
-    mvprintw(33, 0, "-                         Good luck, brave adventurer.                        -");
-    mvprintw(35, 0, "-                           [ PLAY ]        [ BACK ]                          -");
+    mvprintw(7, 0, "-     WARNING: If you can't see the options below, make the window bigger     -");
+    mvprintw(8, 0, "-   and press 'd', then 'spacebar'. Try again once you're back to the menu.   -");
+    mvprintw(10, 0, "-        You are a brave adventurer diving into a dungeon to hone your        -");
+    mvprintw(11, 0, "-                   skills toward reaching greater heights.                   -");
+    mvprintw(13, 0, "-                Why and to what extent you ask? Don't ask me.                -");
+    mvprintw(14, 0, "-                  You are your own driver in this adventure.                 -");
+    mvprintw(16, 0, "-   Once you enter the dungeon, you have to keep going until you eventually   -");
+    mvprintw(17, 0, "-         perish or choose to quit. There's no end. Just keep killing.        -");
+    mvprintw(19, 0, "-            There is no way to resume your progress, so strap in.            -");
+    mvprintw(21, 0, "-     Each floor will present you with three difficulties with a range of     -");
+    mvprintw(22, 0, "-    possible enemies. The further you go into the dungeon, the harder the    -");
+    mvprintw(23, 0, "-  enemies will become. The difficulties you choose will determine the drops. -");
+    mvprintw(25, 0, "-    Each enemy will drop at least one HP potion of varying strength, while   -");
+    mvprintw(26, 0, "-                  there's a 10 percent chance for a weapon.                  -");
+    mvprintw(27, 0, "- Each difficulty has a generation pool of 4 common weapons and 2 rarer ones. -");
+    mvprintw(29, 0, "-            Better weapons will automatically replace lesser ones.           -");
+    mvprintw(30, 0, "-   You can use potions whenever you can access them. There's no health cap.  -");
+    mvprintw(32, 0, "-                         Use these drops to survive.                         -");
+    mvprintw(34, 0, "-                    It's dangerous to go alone, take this.                   -");
+    mvprintw(36, 0, "-                         +1 [ BROKEN BLADE - 10 DMG ]                        -");
+    mvprintw(38, 0, "-                         Good luck, brave adventurer.                        -");
+    mvprintw(40, 0, "-                           [ PLAY ]        [ BACK ]                          -");
 
     refresh();
 }
@@ -516,7 +521,6 @@ void checkFile()
 ---------------------------------------------------------------------------------------------*/
 void leaderboard()
 {
-    // Display output
     printLeaderboard();
 
     // Initialize cursor position
@@ -581,7 +585,6 @@ void printLeaderboard()
 ---------------------------------------------------------------------------------------------*/
 void controls()
 {
-    // Display output
     printControls();
 
     // Initialize cursor position
@@ -635,7 +638,6 @@ void printControls()
 ---------------------------------------------------------------------------------------------*/
 bool quit(int state)
 {
-    // Display output
     if (state == 0)
     {
         printQuit();    // Qutting from main menu
@@ -733,7 +735,6 @@ void printExit()
 ---------------------------------------------------------------------------------------------*/
 void dead()
 {
-    // Display output
     printDead();
 
     // Initialize cursor position
@@ -839,7 +840,6 @@ void floorChoice()
     
     while (currPlayer.alive)
     {
-        // Display output
         printChoiceMenu(selectedOption);
         
         // Handle user input
@@ -964,7 +964,6 @@ void floor()
 
     while (!run)
     {
-        // Display output
         printFloor(selectedOption);
         
         // Handle user input
@@ -991,7 +990,10 @@ void floor()
                         if (damage != -1)
                         {
                             currEnemy->health -= damage;
-                            currPlayer.health -= currEnemy->attack;
+                            if (currEnemy->health > 0)
+                            {
+                                currPlayer.health -= currEnemy->attack;
+                            }
                         }
 
                         if (currEnemy->health <= 0)
@@ -1001,7 +1003,7 @@ void floor()
                             currPlayer.floor++;
                             run = true;   
                         }
-                        else if (currPlayer.health <= 0)
+                        if (currPlayer.health <= 0)
                         {
                             currPlayer.alive = false;
                             run = true;
@@ -1155,7 +1157,6 @@ int attack()
     int ch;
     while (true)
     {
-        // Display output
         printAttack(selectedOption);
 
         // Move cursor and update selection
@@ -1260,7 +1261,6 @@ bool inventory()
     int ch;
     while (true)
     {
-        // Display output
         printInventory(selectedOption);
 
         // Move cursor and update selection
@@ -1403,7 +1403,6 @@ void printInventory(int selectedOption)
 ---------------------------------------------------------------------------------------------*/
 void info()
 {
-    // Display output
     printInfo();
 
     // Initialize cursor position
@@ -1482,7 +1481,6 @@ void printInfo()
 ---------------------------------------------------------------------------------------------*/
 bool floorRun()
 {
-    // Display output
     printFloorRun();
 
     // Initialize cursor position
@@ -1568,7 +1566,7 @@ void drops()
     dropsPotion75();
     dropsPotion100();
 
-    // Display output
+    // Display drops screen
     printDrops();
 
     // Initialize cursor position
